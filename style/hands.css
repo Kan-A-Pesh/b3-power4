@@ -1,0 +1,18 @@
+.hand {
+  position: fixed;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 1px solid black;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: all 0.1s ease-in-out, width 0s, height 0s, border-color 0s;
+  z-index: 1000;
+}
+
+.hand.active {
+  border-color: red;
+  width: 20px;
+  height: 20px;
+}

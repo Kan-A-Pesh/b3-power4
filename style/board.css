@@ -1,0 +1,80 @@
+.board {
+  --cell-spacing: 1rem;
+  --cell-size: 50px;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  padding: var(--cell-spacing);
+  gap: var(--cell-spacing);
+  border-radius: 1rem;
+  border: 1px solid #000c;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cell-spacing);
+}
+
+.cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  border: 1px solid #0007;
+  border-radius: 50%;
+
+  position: relative;
+}
+
+.cell-content {
+  --fall-cells: 6;
+
+  --fall-distance: calc(
+    (var(--cell-size) + var(--cell-spacing)) * var(--fall-cells) +
+      var(--cell-spacing)
+  );
+  --cell-color: #000;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  background-color: var(--cell-color);
+  transform: translateY(0);
+  border-radius: 50%;
+  animation: fall calc(var(--fall-cells) * 0.2s) ease-in;
+}
+
+@keyframes fall {
+  from {
+    transform: translateY(calc(var(--fall-distance) * -1));
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.placeholder {
+  --cell-size: 30px;
+  background-color: var(--cell-color);
+  border-radius: 50%;
+  position: fixed;
+  top: 50%;
+  transform: translate(-50%, calc(-50% - 275px));
+  animation: pulse 1s ease-in-out alternate infinite;
+}
+
+@keyframes pulse {
+  from {
+    width: var(--cell-size);
+    height: var(--cell-size);
+  }
+  to {
+    width: calc(var(--cell-size) * 1.5);
+    height: calc(var(--cell-size) * 1.5);
+  }
+}

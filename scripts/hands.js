@@ -4,6 +4,8 @@ class HandTracker {
 
     this.handsElement = [];
     this.physicalHands = [];
+
+    this.onHandsMoveCallback = null;
   }
 
   preload() {
@@ -89,6 +91,12 @@ class HandTracker {
         isContact: is_contact,
       };
     });
+
+    this.onHandsMoveCallback && this.onHandsMoveCallback(this.physicalHands);
+  }
+
+  onHandsMove(callback) {
+    this.onHandsMoveCallback = callback;
   }
 }
 

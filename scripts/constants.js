@@ -1,2 +1,2 @@
-const MAX_TOUCH_DISTANCE_SQ = 1700;
+const MAX_TOUCH_DISTANCE_SQ = 2500;
 const REVERSE_X_AXIS = true;
