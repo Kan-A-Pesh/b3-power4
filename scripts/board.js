@@ -35,7 +35,7 @@ class Board {
     if (this.currentPlayer === 0) return;
     const index = this.board[col].cells.findIndex((cell) => cell.value === null);
     const cell = index !== -1 ? this.board[col].cells[index] : null;
-    // const cell = this.board[col].cells.find((cell) => cell.value === null);
+
     if (cell === null) return;
 
     cell.value = this.currentPlayer;
@@ -57,7 +57,9 @@ class Board {
     // Set the current player to 0 to prevent adding another piece
     const currentPlayerTmp = this.currentPlayer;
     this.currentPlayer = 0;
+
     console.log(this.checkWin(col, index));
+
     // Start the turn animation
     setTimeout(() => {
       startTurnAnimation(currentPlayerTmp === 1 ? "red" : "blue");
@@ -69,23 +71,19 @@ class Board {
     }, fallDistance * 200 + 200);
   }
   checkWin(col, row) {
+    // return a boolean of the win state 
     const ca = {
       x: col,
       y: row,
       value: this.board[col].cells[row].value,
     }
-    return this.checkHorizontalWin(ca) || this.checkVerticalWin(ca) || this.checkDiagonalWin(ca);
+
+    const countWin = (x, y) => {
+      return this.countDirection(ca, x, y) + this.countDirection(ca, -x, -y) + 1 >= 4;
+    }
+    return countWin(1, 0) || countWin(0, 1) || countWin(1, 1) || countWin(1, -1);
   }
-  checkHorizontalWin(ca) {
-    return this.countDirection(ca, 1, 0) + this.countDirection(ca, -1, 0) + 1 >= 4;
-  }
-  checkVerticalWin(ca) {
-    return this.countDirection(ca, 0, 1) + this.countDirection(ca, 0, -1) + 1 >= 4;
-  }
-  checkDiagonalWin(ca) {
-    return this.countDirection(ca, 1, 1) + this.countDirection(ca, -1, -1) + 1 >= 4 || this.countDirection(ca, 1, -1) + this.countDirection(ca, -1, 1) + 1 >= 4;
-  }
-  countDirection(ca, x, y) {
+  countDirection(ca, x, y)  {
     let count = 0;
     let i = ca.x + x;
     let j = ca.y + y;
