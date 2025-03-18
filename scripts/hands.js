@@ -61,6 +61,11 @@ class HandTracker {
           keypoint.name === "index_finger_tip" || keypoint.name === "thumb_tip"
       );
 
+      // Show keypoints
+      // fingertips.forEach((keypoint) => {
+      //   ellipse(keypoint.x, keypoint.y, 10, 10);
+      // });
+
       // Calculate distance between thumb and index finger
       const thumb =
         keypoints.find((k) => k.name === "thumb_tip") || keypoints[4];
