@@ -33,9 +33,12 @@ class Board {
 
   tryAddPiece(col) {
     if (this.currentPlayer === 0) return;
+    const index = this.board[col].cells.findIndex(
+      (cell) => cell.value === null
+    );
+    const cell = index !== -1 ? this.board[col].cells[index] : null;
 
-    const cell = this.board[col].cells.find((cell) => cell.value === null);
-    if (!cell) return;
+    if (cell === null) return;
 
     cell.value = this.currentPlayer;
 
@@ -57,6 +60,15 @@ class Board {
     const currentPlayerTmp = this.currentPlayer;
     this.currentPlayer = 0;
 
+    const timeout = fallDistance * 200 + 200;
+
+    if (this.checkWin(col, index)) {
+      setTimeout(() => {
+        startWinAnimation(currentPlayerTmp === 1 ? "blue" : "red");
+      }, timeout);
+      return;
+    }
+
     // Start the turn animation
     setTimeout(() => {
       startTurnAnimation(currentPlayerTmp === 1 ? "red" : "blue");
@@ -65,7 +77,44 @@ class Board {
       setTimeout(() => {
         this.currentPlayer = currentPlayerTmp === 1 ? 2 : 1;
       }, 1000);
-    }, fallDistance * 200 + 200);
+    }, timeout);
+  }
+
+  checkWin(col, row) {
+    // return a boolean of the win state
+    const ca = {
+      x: col,
+      y: row,
+      value: this.board[col].cells[row].value,
+    };
+
+    const countWin = (x, y) => {
+      return (
+        this.countDirection(ca, x, y) + this.countDirection(ca, -x, -y) + 1 >= 4
+      );
+    };
+    return (
+      countWin(1, 0) || countWin(0, 1) || countWin(1, 1) || countWin(1, -1)
+    );
+  }
+
+  countDirection(ca, x, y) {
+    let count = 0;
+    let i = ca.x + x;
+    let j = ca.y + y;
+
+    while (
+      i >= 0 &&
+      i < 7 &&
+      j >= 0 &&
+      j < 6 &&
+      this.board[i].cells[j].value == ca.value
+    ) {
+      count++;
+      i += x;
+      j += y;
+    }
+    return count;
   }
 }
 
